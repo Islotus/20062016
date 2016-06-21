@@ -12,11 +12,13 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <string>
+#include <string.h>
 
 using std::cin;
 using std::cout;
 using std::endl;
-
+using std::string;
 
 template <typename T>
 class Queue
@@ -55,7 +57,7 @@ Queue<T>::Queue(int cap)  //实现有参构造函数
 ,_headpos(0)
 ,_tailpos(0)
 {
-	printf("first:_queuearr = %p\n",_queuearr);
+//	printf("first:_queuearr = %p\n",_queuearr);
 	cout << "Queue(int)" << endl;
 }
 
@@ -63,7 +65,7 @@ template <typename T>
 Queue<T>::~Queue()  //析构函数
 {
 	
-	printf("second:_queuearr = %p\n",_queuearr);
+//	printf("second:_queuearr = %p\n",_queuearr);
 	delete [] _queuearr;
 	cout << "~Queue()" << endl;
 }
@@ -74,9 +76,10 @@ bool Queue<T>::enqueue(T ch)  //实现入队
 	if(!isfull())  //队不满
 	{
 		_queuearr[_tailpos] = ch;  //先入队
+//		printf("sizeof(_queue[]) = %d\n",sizeof(_queuearr[_tailpos]));
+//		printf("strlen(_queue[]) = %d\n",_queuearr[_tailpos].size());
 		_tailpos = (_tailpos + 1)%_capacity;
 //		++_tailpos;  //队尾再向后移动一位
-//		cout << "enqueue(char)" << endl;
 		return true;
 	}
 	else  //队满
@@ -120,7 +123,7 @@ bool Queue<T>::isfull()  //队列是否为满
 int main()
 {
 	int i = 0;
-#if 1
+#if 0
 //char型
 	Queue<char> que(5);
 	for(char ch = 'a' ;i < 4; ++i)  //入队
@@ -143,6 +146,7 @@ int main()
 	}
 	que.enqueue('e');
 #endif
+#if 0
 //int型
 	Queue<int> que1(5);
 	 i = 0;
@@ -162,7 +166,16 @@ int main()
 		que1.enqueue(i);
 	}
 	que1.enqueue(1);
+#endif 
 
+//string型  //string类型也行，因为它是一个类型，根本原因是它重载了赋值运算符，
+	Queue<string> que2(5);
+	que2.enqueue("hello,");
+//	printf("sizeof(_queuearr[0]) = %d",Queue<string>::_queuearr[0]);  //Error
+	que2.enqueue("world,china,shenzhen");
+//	printf("sizeof(_queuearr[1]) = %d",Queue<string>::_queuearr[1]);  //Error
+	que2.dequeue();
+	que2.dequeue();
 
 	return 0;
 }
